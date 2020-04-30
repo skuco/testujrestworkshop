@@ -31,7 +31,7 @@ public class HousesTest {
                             .then().extract().jsonPath().get("token");
         System.out.println(token);
         //2 - use token
-        given().header("Authorization","Bearer".concat(token))
+        given().header("Authorization","Bearer ".concat(token))
                 .when().get("/houses").then().log().body().statusCode(200);
     }
 }
