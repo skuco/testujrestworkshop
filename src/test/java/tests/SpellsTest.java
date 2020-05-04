@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import static io.restassured.RestAssured.*;
+import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
 import static java.util.stream.Collectors.toList;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
@@ -29,7 +30,7 @@ public class SpellsTest {
     @BeforeEach
     void resetSpells(){
         //when().get("/actions/deleteAll").then().statusCode(200);
-        //when().get("/actions/reset").then().statusCode(200);
+        when().get("/actions/reset").then().statusCode(200);
     }
 
     @Test
@@ -143,5 +144,9 @@ public class SpellsTest {
                 .log().body();
     }
 
-
+    @Test
+    void itShouldReturnSpecificSpellMatchingSchema() {
+        given().pathParam("id", "5b74ef813228320021ab624c").when().get("/{id}")
+                .then().body(matchesJsonSchemaInClasspath("spell_schema.json"));
+    }
 }

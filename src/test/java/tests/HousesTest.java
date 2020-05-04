@@ -13,6 +13,10 @@ public class HousesTest {
         RestAssured.baseURI = "http://localhost";
         RestAssured.port = 3000;
         //RestAssured.basePath = "/houses";
+        String token = given()
+                .auth().preemptive().basic("admin","supersecret")
+                .when().get("/login")
+                .then().extract().jsonPath().get("token");
     }
     @Test
     void itShouldReturnMessageWithoutToken() {
@@ -34,4 +38,10 @@ public class HousesTest {
         given().header("Authorization","Bearer ".concat(token))
                 .when().get("/houses").then().log().body().statusCode(200);
     }
+
+/*    @Test
+    void itShouldReturnNameForEachCharacter() {
+        List<String> ids = given().header("Authorization","Bearer ".concat(token))
+                .// TODO
+    }*/
 }
